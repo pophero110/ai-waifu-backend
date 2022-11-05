@@ -2,7 +2,7 @@
   <% @ai_waifus.each_slice(3) do |ai_waifus| %>
     <div class="row">
         <% ai_waifus.each do |ai_waifu| %>
-            <div class="col bg-image hover-overlay ripple shaow-1-strong rounded-3", data-mdb-ripple-color="light">
+            <div class="col bg-image hover-overlay ripple shaow-1-strong rounded-3 mb-3", data-mdb-ripple-color="light">
                 <a href=<%= ai_waifu_path(ai_waifu)%>>
                   <%= image_tag ai_waifu.image, class: "img-fluid img-thumbnail" %>
                 </a>
