@@ -1,0 +1,10 @@
+<h1 class="text-center">
+    Click image to download it
+</h1>
+<div class="d-flex justify-content-center">
+    <% if @ai_waifu.image.attached? %>
+        <%= link_to @ai_waifu.image, :download => @ai_waifu.name do %>
+            <%= image_tag @ai_waifu.image, class: "img-fluid img-thumbnail" %>
+        <% end%>
+    <% end %>
+</div>
