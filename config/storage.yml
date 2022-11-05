@@ -8,8 +8,8 @@ local:
 
 amazon:
     service: S3
-    access_key_id: ENV["access_key_id"]
-    secret_access_key: ENV["secret_access_key"]
+    access_key_id: <%= ENV["access_key_id"] %>
+    secret_access_key: <%= ENV["secret_access_key"] %>
     region: us-east-2
     bucket: ai-anime-waifu-picture
 # Remember not to checkin your GCS keyfile to a repository
