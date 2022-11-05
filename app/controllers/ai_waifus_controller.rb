@@ -1,12 +1,15 @@
 class AiWaifusController < ApplicationController
-	http_basic_authenticate_with name: "jeff", password: "jeff123", except: [:index, :show]
-
+	USERS = { "jeff" => "jiajin" }
+	before_action :authenticate, except: [:show]
 	def new
 		@ai_waifu = AiWaifu.new
 	end
 
 	def create
 		ai_waifu = AiWaifu.create! params.require(:ai_waifu).permit(:name, :image)
+		unless ai_waifu.valid?
+		  flash[:alert] = ai_waifu.error.messages
+		end
 		redirect_to ai_waifu
 	end
 	
@@ -33,5 +36,13 @@ class AiWaifusController < ApplicationController
 		@ai_waifu = AiWaifu.find(params[:id])
 		@ai_waifu.delete
 		redirect_to ai_waifus_path
+	end
+	
+	private
+	
+	def authenticate
+	  authenticate_or_request_with_http_digest do |username|
+        USERS[username]
+      end
 	end
 end

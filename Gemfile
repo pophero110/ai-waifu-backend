@@ -43,6 +43,7 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 
 gem "aws-sdk-s3"
+gem 'dotenv-rails', groups: [:development, :test]
 # Use Sass to process CSS
 # gem "sassc-rails"
 
