@@ -1,7 +1,8 @@
 class AiWaifusController < ApplicationController
 	USERS = { "jeff" => "jiajin" }
-	before_action :set_ai_waifu, only: [:show, :edit, :destroy, :like]
-	before_action :authenticate, except: [:show, :like]
+	skip_before_action :verify_authenticity_token
+	before_action :set_ai_waifu, only: [:show, :edit, :destroy, :like, :download]
+	before_action :authenticate, except: [:show, :like, :download]
 	def new
 		@ai_waifu = AiWaifu.new
 	end
@@ -21,7 +22,7 @@ class AiWaifusController < ApplicationController
 	end
 	
 	def index
-		@ai_waifus = AiWaifu.includes(:likes)
+		@ai_waifus = AiWaifu.includes(:likes, :downloads)
 	end
 
 	def update
@@ -38,6 +39,10 @@ class AiWaifusController < ApplicationController
 
 	def like
 		@ai_waifu.likes.create
+	end
+
+	def download
+		@ai_waifu.downloads.create
 	end
 	
 	private

@@ -1,10 +1,17 @@
-<h1 class="text-center">
+<h1>
     Click image to download it
 </h1>
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center flex-column align-item-center">
     <% if @ai_waifu.image.attached? %>
-        <%= link_to rails_blob_path(@ai_waifu.image, disposition: "attachment") do %>
-            <%= image_tag @ai_waifu.image, class: "img-fluid img-thumbnail" %>
+        <%= link_to rails_blob_path(@ai_waifu.image, disposition: "attachment"), class:"download-link d-block" do %>
+            <%= image_tag @ai_waifu.image, class: "img-fluid img-thumbnail", id:@ai_waifu.id.to_s %>
         <% end%>
+        <div class="border bg-light">
+            <%= button_to like_ai_waifu_path(@ai_waifu), method: :post, class:"btn btn-outline-info text-decoration-none like-button" do %>
+            <i class="bi bi-heart-fill">Like</i>
+            <p class="d-inline" style="color=black;"><%= @ai_waifu.likes.count %></p>
+            <% end %>
+        </div>
     <% end %>
 </div>
+

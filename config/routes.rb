@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   root 'welcome#index'
   resources :ai_waifus do
     post 'like', on: :member
+    post 'download', on: :member
   end
 end
