@@ -4,5 +4,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   root 'welcome#index'
-  resources :ai_waifus
+  resources :ai_waifus do
+    post 'like', on: :member
+  end
 end

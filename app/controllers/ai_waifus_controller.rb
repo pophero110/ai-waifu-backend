@@ -1,6 +1,7 @@
 class AiWaifusController < ApplicationController
 	USERS = { "jeff" => "jiajin" }
-	before_action :authenticate, except: [:show]
+	before_action :set_ai_waifu, only: [:show, :edit, :destroy, :like]
+	before_action :authenticate, except: [:show, :like]
 	def new
 		@ai_waifu = AiWaifu.new
 	end
@@ -14,15 +15,13 @@ class AiWaifusController < ApplicationController
 	end
 	
 	def show
-		@ai_waifu = AiWaifu.find(params[:id])
 	end
 
 	def edit
-		@ai_waifu = AiWaifu.find(params[:id])
 	end
 	
 	def index
-		@ai_waifus = AiWaifu.all
+		@ai_waifus = AiWaifu.includes(:likes)
 	end
 
 	def update
@@ -33,12 +32,19 @@ class AiWaifusController < ApplicationController
 	end
 
 	def destroy
-		@ai_waifu = AiWaifu.find(params[:id])
 		@ai_waifu.delete
 		redirect_to ai_waifus_path
 	end
+
+	def like
+		@ai_waifu.likes.create
+	end
 	
 	private
+
+	def set_ai_waifu
+		@ai_waifu = AiWaifu.find(params[:id])
+	end
 	
 	def authenticate
 	  authenticate_or_request_with_http_digest do |username|
