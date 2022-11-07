@@ -44,6 +44,8 @@ gem "bootsnap", require: false
 
 gem "aws-sdk-s3"
 gem 'dotenv-rails', groups: [:development, :test]
+gem "kaminari"
+
 # Use Sass to process CSS
 gem "sassc-rails"
 
