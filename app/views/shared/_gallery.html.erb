@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".like-button").forEach((e) => {
     e.addEventListener("click", () => {
       e.lastElementChild.innerHTML =  parseInt(e.lastElementChild.innerHTML) + 1
+      e.classList.add("disabled")
+      e.firstElementChild.classList.remove("bi-heart");
+      e.firstElementChild.classList.add("bi-heart-fill");
     })
   })
 
