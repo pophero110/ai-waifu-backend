@@ -22,7 +22,7 @@ class AiWaifusController < ApplicationController
 	end
 	
 	def index
-		@ai_waifus = AiWaifu.includes(:likes, :downloads)
+		@ai_waifus = AiWaifu.includes(:likes, :downloads).order(created_at: :desc)
 	end
 
 	def update
