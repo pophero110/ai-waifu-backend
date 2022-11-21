@@ -1,0 +1,38 @@
+.jumbotron {
+    background-image: url(<%= asset_path 'test.png' %>);
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center bottom;
+}
+
+@media screen and (max-width: 768px){
+    .jumbotron {
+        background-image: url(<%= asset_path 'header-background-6-1.png' %>);
+        background-position: center;
+    }
+}
+
+<%# .call-for-action {
+    color: white;
+    opacity: 0.8;
+    margin-top: 34%;
+} %>
+
+body {
+  background-color: #303030 !important;
+}
+
+.card {
+    background-color: #424242 !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.navbar {
+    width: 100%;
+    padding: 10px !important;
+}
+
+.main-title {
+    margin-bottom: 30%;
+}
