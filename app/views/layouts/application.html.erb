@@ -27,14 +27,15 @@
   </head>
 
   <body>
+    <%= render "shared/navbar" %>
     <%= render "layouts/header" %>
   <div class="container mb-3">
     <%= yield %>
   </div>
-    <footer class="bg-light text-center text-lg-start">
+    <footer class="text-center text-lg-start">
     <!-- Copyright -->
     <div class="text-center">
-      <p class="text-dark m-0 p-3" >&copy; Copyright 2022, Waifu Alchemist</p>
+      <p class="text-light m-0 p-3" >&copy; Copyright 2022, Waifu Alchemist</p>
     </div>
     <!-- Copyright -->
     </footer>
