@@ -13,3 +13,10 @@ $(window).scroll(function () {
         $('.navbar').removeClass('semi-transparent');
     }
 });
+
+$('.auth-btn').click(function () {
+    $('.sign-up-form').toggleClass('d-none');
+    $('.sign-in-form').toggleClass('d-none');
+    $('.sign-in-btn').toggleClass('button-toggle');
+    $('.sign-up-btn').toggleClass('button-toggle');
+});

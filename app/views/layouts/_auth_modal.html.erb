@@ -1,0 +1,47 @@
+<div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+      <div class="modal-title bg-light w-100 d-flex justify-content-around p-2 rounded">
+        <button class="btn btn-line text-decoration-none auth-btn sign-in-btn border-0 ps-5 pe-5 button-toggle">Sign in</button>
+        <button class="btn btn-line text-decoration-none auth-btn sign-up-btn border-0 ps-5 pe-5">Sign up</button>
+      </div>
+      </div>
+      <div class="modal-body sign-in-form">
+        <%= form_with url: login_path, scope: :user do |form| %>
+          <div class="mb-3">
+            <%= form.label :email, class:"form-label" %>
+            <%= form.email_field :email, required: true, class:"form-control" %>
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <%= form.label :password, class:"form-label" %>
+            <%= form.password_field :password, required: true, class:"form-control" %>
+          </div>
+          <div class="mb-3 form-check">
+            <%= form.label :remember_me, class:"form-check-label" %>
+            <%= form.check_box :remember_me, class:"form-check-input" %>
+          </div>
+          <%= form.submit "Sign in", class:"btn btn-primary" %>
+        <% end %>
+      </div>
+      <div class="modal-body sign-up-form d-none">
+        <%= form_with url: sign_up_path, scope: :user do |form| %>
+          <div class="mb-3">
+            <%= form.label :email, class:"form-label" %>
+            <%= form.email_field :email, required: true, class:"form-control" %>
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <%= form.label :password, class:"form-label" %>
+            <%= form.password_field :password, required: true, class:"form-control" %>
+          </div>
+          <%= form.submit "Sign up", class:"btn btn-primary" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+</div>

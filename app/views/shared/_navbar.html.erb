@@ -1,15 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between fixed-navbar transparent">
   <a class="navbar-brand text-white" href="/">Home</a>
-  <div class="search-bar">
-  </div>
-  <div class="authentication d-flex">
-    <ul class="navbar-nav d-flex flex-row justify-content-around w-75">
+  <ul class="navbar-nav d-flex flex-row">
+    <% if !user_signed_in? %> 
       <li class="nav-item">
-        <a class="nav-link text-white" href="/users/sign_in">Login</a>
+        <button type="button" class="nav-link btn btn-link text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Sign in
+        </button>
       </li>
+    <% else %>
       <li class="nav-item">
-        <a class="nav-link text-white" href="/users/sign_up">Signup</a>
+        <%= button_to "Sign Out", logout_path, method: :delete, class: "nav-link btn btn-link text-white" %>
       </li>
-    </ul>
-  </div>
+    <% end %>
+  </ul>
 </nav>

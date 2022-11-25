@@ -1,5 +1,5 @@
 .jumbotron {
-    background-image: url(<%= asset_path 'test-2.png' %>);
+    background-image: url(<%= asset_path 'header-background-1.png' %>);
     height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
@@ -8,7 +8,7 @@
 
 @media screen and (max-width: 768px){
     .jumbotron {
-        background-image: url(<%= asset_path 'header-background-6-1.png' %>);
+        background-image: url(<%= asset_path 'header-background-2.png' %>);
         background-position: center;
     }
 }
@@ -33,6 +33,7 @@ body {
 
 .main-title {
     margin-bottom: 30%;
+    font-family: 'Tangerine', serif;
 }
 
 footer {
@@ -53,4 +54,59 @@ footer {
 
 .semi-transparent {
     background-color: rgba(0,0,0,.8) !important;
+}
+
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border: 0px;
+  border-right: none;
+  padding: 5px;
+  height: 35px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+.searchTerm:focus{
+  color: black;
+}
+
+.searchButton {
+  width: 40px;
+  height: 36px;
+  border: 0px;
+  background: #424242;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap{
+  width: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.nav-link {
+  width: 100px; 
+}
+
+.button-toggle {
+  background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+  color: white !important;
+}
+.auth-btn {
+  -webkit-transition: all 0.5s linear !important;
+  transition: all 0.5s linear !important;
 }

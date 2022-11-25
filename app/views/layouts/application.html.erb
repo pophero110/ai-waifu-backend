@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Freehand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EVNTV2E61F"></script>
     <script>
@@ -23,13 +24,15 @@
       gtag('js', new Date());
       gtag('config', 'G-EVNTV2E61F');
     </script>
-    <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <%= render "layouts/auth_modal" %>
     <%= render "shared/navbar" %>
     <%= render "layouts/header" %>
   <div class="container mb-3">
+    <p class="notice text-white"><%= notice %></p>
+    <p class="alert text-white"><%= alert %></p>
     <%= yield %>
   </div>
     <footer class="text-center text-lg-start">
