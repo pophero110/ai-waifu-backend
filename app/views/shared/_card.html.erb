@@ -1,13 +1,13 @@
 <div class="card col-sm mb-2 ms-1 me-1 p-0", id=<%= dom_id(ai_waifu) %> style="width: 18rem;">
   <%= image_tag ai_waifu.image, class: "img-fluid rounded" %>
   <div class="card-body p-1 d-flex justify-content-center">
-    <%# <h5 class="card-title">Card title</h5> %>
-    <%# <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> %>
-    <%= button_to like_ai_waifu_path(ai_waifu), method: :post, class:"btn btn-outline-danger text-decoration-none like-button me-1 fa-lg" do %>
+    <% # <h5 class="card-title">Card title</h5> %>
+    <% # <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> %>
+    <%= button_to like_ai_waifu_path(ai_waifu), method: :post, class: "btn btn-outline-danger text-decoration-none like-button me-1 fa-lg" do %>
         <i class="bi bi-heart" style="color:red; font-size:20px;"></i>
         <p class="d-inline" style="color=black;"><%= ai_waifu.likes.count %></p>
     <% end %>
-    <%= link_to rails_blob_path(ai_waifu.image, disposition: "attachment"), method: :post, class:"btn btn-outline-secondary text-decoration-none download-button me-1", id:ai_waifu.id.to_s do %>
+    <%= link_to rails_blob_path(ai_waifu.image, disposition: "attachment"), method: :post, class: "btn btn-outline-secondary text-decoration-none download-button me-1", id: ai_waifu.id.to_s do %>
         <i class="bi bi-cloud-download" style="color:black; font-size:20px;"></i>
         <p class="d-inline" style="color=black;"><%= ai_waifu.downloads.count %></p>
     <% end %>

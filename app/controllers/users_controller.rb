@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(create_user_params)
     if @user.save
-      @user.send_confirmation_email!  
+      @user.send_confirmation_email!
       redirect_to root_path, notice: "Please check your email for confirmation instructions."
     else
       render :new, status: :unprocessable_entity
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-    def destroy
+  def destroy
     current_user.destroy
     reset_session
     redirect_to root_path, notice: "Your account has been deleted."
@@ -56,5 +56,4 @@ class UsersController < ApplicationController
   def update_user_params
     params.require(:user).permit(:current_password, :password, :password_confirmation, :unconfirmed_email)
   end
-
 end

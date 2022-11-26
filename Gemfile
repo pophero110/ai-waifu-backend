@@ -43,7 +43,7 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 
 gem "aws-sdk-s3"
-gem 'dotenv-rails', groups: [:development, :test]
+gem "dotenv-rails", groups: [:development, :test]
 gem "kaminari"
 
 # Use Sass to process CSS
@@ -55,6 +55,7 @@ gem "sassc-rails"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "rufo"
 end
 
 group :development do
@@ -78,4 +79,4 @@ end
 gem "cssbundling-rails", "~> 1.1"
 gem "jwt"
 gem "jsbundling-rails", "~> 1.0"
-gem 'rack-cors'
+gem "rack-cors"

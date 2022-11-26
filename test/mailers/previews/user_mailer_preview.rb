@@ -5,5 +5,4 @@ class UserMailerPreview < ActionMailer::Preview
   def confirmation
     UserMailer.confirmation
   end
-
 end

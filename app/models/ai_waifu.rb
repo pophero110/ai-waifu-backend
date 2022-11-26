@@ -4,12 +4,11 @@ class AiWaifu < ApplicationRecord
   has_many :downloads, dependent: :destroy
   paginates_per 9
 
-
   def image_url
     if self.image.attached?
-        self.image.url
+      self.image.url
     else
-        nil
+      nil
     end
   end
 end

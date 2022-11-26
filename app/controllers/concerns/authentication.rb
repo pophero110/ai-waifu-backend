@@ -35,17 +35,17 @@ module Authentication
   end
 
   def remember(active_session)
-    cookies.permanent.encrypted[:remember_token] = active_session.remember_token
+    cookies.encrypted[:remember_token] = { value: active_session.remember_token, expires: 1.day }
   end
 
   private
 
   def current_user
     Current.user = if session[:current_active_session_id].present?
-      ActiveSession.find_by(id: session[:current_active_session_id])&.user
-    elsif cookies.permanent.encrypted[:remember_token].present?
-      ActiveSession.find_by(remember_token: cookies.permanent.encrypted[:remember_token])&.user
-    end
+        ActiveSession.find_by(id: session[:current_active_session_id])&.user
+      elsif cookies.permanent.encrypted[:remember_token].present?
+        ActiveSession.find_by(remember_token: cookies.permanent.encrypted[:remember_token])&.user
+      end
   end
 
   def user_signed_in?
@@ -55,5 +55,4 @@ module Authentication
   def store_location
     session[:user_return_to] = request.original_url if request.get? && request.local?
   end
-
 end

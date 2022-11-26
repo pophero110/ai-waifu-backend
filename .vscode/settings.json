@@ -1,0 +1,5 @@
+{
+    "[ruby]": { // or [erb] / [gemfile]
+        "editor.formatOnSave": true
+    },
+}

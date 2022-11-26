@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-  root 'welcome#index'
+  root "welcome#index"
 
   post "sign_up", to: "users#create"
   get "sign_up", to: "users#new"
@@ -17,8 +17,8 @@ Rails.application.routes.draw do
 
   resources :confirmations, only: [:create, :edit, :new], param: :confirmation_token
   resources :ai_waifus do
-    post 'like', on: :member
-    post 'download', on: :member
+    post "like", on: :member
+    post "download", on: :member
   end
   resources :passwords, only: [:create, :edit, :new, :update], param: :password_reset_token
 
@@ -28,7 +28,14 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :api do 
+  namespace :api do
     resources :ai_waifus
+
+    post "sign_up", to: "users#create"
+    put "account", to: "users#update"
+    delete "account", to: "users#destroy"
+
+    post "login", to: "sessions#create"
+    delete "logout", to: "sessions#destroy"
   end
 end

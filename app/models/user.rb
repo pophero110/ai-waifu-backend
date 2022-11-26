@@ -3,7 +3,7 @@ class User < ApplicationRecord
   PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes
   MAILER_FROM_EMAIL = "no-reply@example.com"
 
- has_many :active_sessions, dependent: :destroy
+  has_many :active_sessions, dependent: :destroy
 
   attr_accessor :current_password
 
@@ -12,7 +12,7 @@ class User < ApplicationRecord
   before_save :downcase_email
   before_save :downcase_unconfirmed_email
 
-  validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}, presence: true, uniqueness: true
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true, uniqueness: true
 
   def self.authenticate_by(attributes)
     passwords, identifiers = attributes.to_h.partition do |name, value|

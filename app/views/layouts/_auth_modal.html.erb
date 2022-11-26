@@ -10,33 +10,33 @@
       <div class="modal-body sign-in-form">
         <%= form_with url: login_path, scope: :user do |form| %>
           <div class="mb-3">
-            <%= form.label :email, class:"form-label" %>
-            <%= form.email_field :email, required: true, class:"form-control" %>
+            <%= form.label :email, class: "form-label" %>
+            <%= form.email_field :email, required: true, class: "form-control" %>
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
           </div>
           <div class="mb-3">
-            <%= form.label :password, class:"form-label" %>
-            <%= form.password_field :password, required: true, class:"form-control" %>
+            <%= form.label :password, class: "form-label" %>
+            <%= form.password_field :password, required: true, class: "form-control" %>
           </div>
           <div class="mb-3 form-check">
-            <%= form.label :remember_me, class:"form-check-label" %>
-            <%= form.check_box :remember_me, class:"form-check-input" %>
+            <%= form.label :remember_me, class: "form-check-label" %>
+            <%= form.check_box :remember_me, class: "form-check-input" %>
           </div>
-          <%= form.submit "Sign in", class:"btn btn-primary" %>
+          <%= form.submit "Sign in", class: "btn btn-primary" %>
         <% end %>
       </div>
       <div class="modal-body sign-up-form d-none">
         <%= form_with url: sign_up_path, scope: :user do |form| %>
           <div class="mb-3">
-            <%= form.label :email, class:"form-label" %>
-            <%= form.email_field :email, required: true, class:"form-control" %>
+            <%= form.label :email, class: "form-label" %>
+            <%= form.email_field :email, required: true, class: "form-control" %>
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
           </div>
           <div class="mb-3">
-            <%= form.label :password, class:"form-label" %>
-            <%= form.password_field :password, required: true, class:"form-control" %>
+            <%= form.label :password, class: "form-label" %>
+            <%= form.password_field :password, required: true, class: "form-control" %>
           </div>
-          <%= form.submit "Sign up", class:"btn btn-primary" %>
+          <%= form.submit "Sign up", class: "btn btn-primary" %>
         <% end %>
       </div>
       <div class="modal-footer">
