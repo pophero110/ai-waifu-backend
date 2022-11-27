@@ -56,6 +56,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem "rufo"
+  gem "annotate"
 end
 
 group :development do
@@ -80,3 +81,4 @@ gem "cssbundling-rails", "~> 1.1"
 gem "jwt"
 gem "jsbundling-rails", "~> 1.0"
 gem "rack-cors"
+gem "rspec-rails", group: [:development, :test]

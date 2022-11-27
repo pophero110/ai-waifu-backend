@@ -7,32 +7,29 @@ module Api
       @user = User.authenticate_by(email: params[:user][:email].downcase, password: params[:user][:password])
       if @user
         if @user.unconfirmed?
-          redirect_to new_confirmation_path, alert: "Incorrect email or password."
+          render status: 422, json: {
+            error: "Email is not confirmed",
+            unconfirmed_emai: true,
+          }
         elsif @user.authenticate(params[:user][:password])
           active_session = login @user
           if params[:user][:remember_me] == "1"
             remember(active_session)
-            render json: {
+            render status: 201, json: {
                      logged_in: true,
                      remember_me: true,
                    }
           else
-            render json: {
+            render status: 201, json: {
                      logged_in: true,
                      remember_me: false,
                    }
           end
         else
-          render json: {
-                   status: 422,
-                   alert: "Incorrect email or password.",
-                 }
+          render_error
         end
       else
-        render json: {
-                 status: 422,
-                 alert: "Incorrect email or password.",
-               }
+        render_error
       end
     end
 
@@ -42,6 +39,26 @@ module Api
       render json: {
                logged_in: false,
              }
+    end
+
+    def is_logged_in?
+      if user_signed_in?
+        render json: {
+                 logged_in: true,
+               }
+      else
+        render json: {
+                 logged_in: false,
+               }
+      end
+    end
+
+    private
+
+    def render_error
+      render status: 422, json: {
+        error: "Incorrect email or password.",
+      }
     end
   end
 end

@@ -13,6 +13,16 @@ module FreeAiAnimeWaifuPicture
     config.assets.compile = false
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins "*"
+        resource "*", headers: :any, methods: [:get, :post, :patch, :put]
+      end
+    end
+
+    Rails.logger = Logger.new(STDOUT)
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

@@ -7,9 +7,9 @@ module Api
       @user = User.new(create_user_params)
       if @user.save
         @user.send_confirmation_email!
-        render json: { status: :created, email: @user.email }
+        render status: :created, json: { email: @user.email }
       else
-        render json: { errors: @user.errors.full_messages }
+        render status: :unprocessable_entity, json: { errors: @user.errors.full_messages }
       end
     end
 
