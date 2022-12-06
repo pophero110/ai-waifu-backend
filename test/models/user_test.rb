@@ -9,6 +9,7 @@
 #  confirmed_at      :datetime
 #  password_digest   :string
 #  unconfirmed_email :string
+#  confirmation_code :string
 #
 require "test_helper"
 
