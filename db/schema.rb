@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_22_211740) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_04_064225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -80,6 +80,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_22_211740) do
     t.index ["ai_waifu_id"], name: "index_likes_on_ai_waifu_id"
   end
 
+  create_table "oauth_access_tokens", force: :cascade do |t|
+    t.text "token", null: false
+    t.text "refresh_token", null: false
+    t.datetime "expired_at", null: false
+    t.datetime "created_at", null: false
+    t.bigint "user_id"
+    t.datetime "updated_at", null: false
+    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
+    t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_oauth_access_tokens_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.datetime "created_at", null: false
@@ -93,4 +105,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_22_211740) do
   add_foreign_key "active_sessions", "users", on_delete: :cascade
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "oauth_access_tokens", "users"
 end

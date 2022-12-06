@@ -1,7 +1,8 @@
 module Api
   class ConfirmationsController < BaseController
-    before_action :redirect_if_authenticated, only: [:create, :new]
+    skip_before_action :authenticatable_request
 
+    # TODO: implement Rack::Attack to protect Rails from bad clients
     def create
       @user = User.find_by(email: params[:user][:email].downcase)
 
@@ -10,21 +11,27 @@ module Api
         head :ok
       else
         logger.warn "user not found or user's email is not confirmed #{params[:user]&.inspect}"
-        render status: :unprocessable_entity, json: { error: "Something went wrong" }
+        re_err('Something went wrong', status: 400)
       end
     end
 
-    def edit
-      @user = User.find_signed(params[:confirmation_token], purpose: :confirm_email)
+    def update
+      @user =
+        User.find_signed(params[:confirmation_token], purpose: :confirm_email)
       if @user.present?
-        if @user.confirm!
-          login @user
-          head :ok
+        if @user.confirms_email?
+          redirect_to web_client_login_path(status: '200')
         else
-          render status: :unprocessable_entity, json: { error: "Your email address has been confirmed" }
+          redirect_to web_client_login_path(
+                        status: '422',
+                        errors: 'Your email address has been confirmed'
+                      )
         end
       else
-        render status: :unprocessable_entity, json: { error: "Invalid Token" }
+        redirect_to web_client_email_confirmation_path(
+                      status: '400',
+                      errors: 'Invalid Confirmation Token'
+                    )
       end
     end
   end

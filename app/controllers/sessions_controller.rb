@@ -1,33 +1,54 @@
 class SessionsController < ApplicationController
-  before_action :authenticate_user!, only: [:destroy]
-  before_action :redirect_if_authenticated, only: [:create, :new]
-
+  skip_before_action :authenticatable_request, only: %i[create update]
   def create
-    @user = User.authenticate_by(email: params[:user][:email].downcase, password: params[:user][:password])
-    if @user
-      if @user.unconfirmed?
-        redirect_to new_confirmation_path, alert: "Incorrect email or password."
-      elsif @user.authenticate(params[:user][:password])
-        after_login_path = session[:user_return_to] || root_path
-        active_session = login @user
-        remember(active_session) if params[:user][:remember_me] == "1"
-        redirect_to after_login_path
+    user =
+      User.authenticate_by(
+        email: params[:user][:email].downcase,
+        password: params[:user][:password]
+      )
+    if user
+      if user.unconfirmed?
+        re_err('Email is not confirmed', status: 401)
+      elsif user.authenticate(params[:user][:password])
+        exp = params[:remember_me] == '1' ? 3.days.from_now : 24.hours.from_now
+        oauthToken = Authenticator.sign_in(user, exp)
+        render status: 201,
+               json: {
+                 access_token: oauthToken.token,
+                 refresh_token: oauthToken.refresh_token
+               }
       else
-        flash.now[:alert] = "Incorrect email or password."
-        render :new, status: :unprocessable_entity
+        re_err('Incorrect email or password', status: 422)
       end
     else
-      flash.now[:alert] = "Incorrect email or password."
-      render :new, status: :unprocessable_entity
+      re_err('Incorrect email or password', status: 422)
     end
   end
 
   def destroy
-    forget_active_session
-    logout
-    redirect_to root_path, notice: "Signed out."
+    if Authenticator.sign_out(access_token)
+      head :ok
+    else
+      re_err('Invalid Token', status: 401)
+    end
   end
 
-  def new
+  def update
+    oauthToken = OauthAccessToken.find_by(refresh_token: params[:refresh_token])
+    if oauthToken
+      if oauthToken.expired?
+        oauthToken.destroy
+        re_err('Expired Token', status: 401)
+      else
+        newToken = Authenticator.refresh_token(oauthToken.user)
+        render status: 200,
+               json: {
+                 access_token: newToken.token,
+                 refresh_token: newToken.refresh_token
+               }
+      end
+    else
+      re_err('Invalid Token', status: 401)
+    end
   end
 end
