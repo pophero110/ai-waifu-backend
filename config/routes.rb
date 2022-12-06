@@ -3,42 +3,37 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-  root "welcome#index"
+  root 'welcome#index'
 
-  post "sign_up", to: "users#create"
-  get "sign_up", to: "users#new"
-  put "account", to: "users#update"
-  get "account", to: "users#edit"
-  delete "account", to: "users#destroy"
-
-  post "login", to: "sessions#create"
-  delete "logout", to: "sessions#destroy"
-  get "login", to: "sessions#new"
-
-  resources :confirmations, only: [:create, :edit, :new], param: :confirmation_token
-  resources :ai_waifus do
-    post "like", on: :member
-    post "download", on: :member
-  end
-  resources :passwords, only: [:create, :edit, :new, :update], param: :password_reset_token
-
-  resources :active_sessions, only: [:destroy] do
-    collection do
-      delete "destroy_all"
-    end
+  # redirect user to web client
+  namespace :web_client do
+    get '/login',
+        to: redirect { |params, request| 'http://localhost:4000/login' }
+    get '/email_confirmation',
+        params: %i[status errors],
+        to:
+          redirect { |params, request|
+            "http://localhost:4000/email_confirmation?status=#{params[:status]}&errors=#{params[:errors]}"
+          }
   end
 
   namespace :api do
-    resources :ai_waifus
+    resources :ai_waifus do
+      post 'like', on: :member
+      post 'download', on: :member
+    end
 
-    post "sign_up", to: "users#create"
-    put "account", to: "users#update"
-    delete "account", to: "users#destroy"
+    post 'sign_up', to: 'users#create'
+    put 'account', to: 'users#update'
+    delete 'account', to: 'users#destroy'
 
-    post "login", to: "sessions#create"
-    delete "logout", to: "sessions#destroy"
-    get "/logged_in", to: "sessions#is_logged_in?"
+    post 'send_email_confirmation', to: 'confirmations#create'
+    get 'confirm_email', to: 'confirmations#update', param: :confirmation_token
+  end
 
-    resources :confirmations, only: [:create, :edit], param: :confirmation_token
+  scope :oauth do
+    post 'sign_in', to: 'sessions#create'
+    delete 'sign_out', to: 'sessions#destroy'
+    put 'refresh_token', to: 'sessions#update'
   end
 end
