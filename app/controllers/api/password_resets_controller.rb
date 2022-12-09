@@ -1,7 +1,9 @@
 module Api
-  class PasswordsController < ApplicationController
+  class PasswordResetsController < ApplicationController
     before_action :authenticate_request!
 
+    # TODO: password reset api refactor
+    # TODO: add params require method
     def create
       @user = User.find_by(email: params[:user][:email].downcase)
       if @user.present?
@@ -21,7 +23,7 @@ module Api
       end
     end
 
-    def edit
+    def verify
       @user =
         User.find_signed(
           params[:password_reset_token],
@@ -33,9 +35,6 @@ module Api
       elsif @user.nil?
         redirect_to new_password_path, alert: 'Invalid or expired token.'
       end
-    end
-
-    def new
     end
 
     def update

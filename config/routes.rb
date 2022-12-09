@@ -21,17 +21,24 @@ Rails.application.routes.draw do
       post 'download', on: :member
     end
 
-    post 'sign_up', to: 'users#create'
-    put 'account', to: 'users#update'
-    delete 'account', to: 'users#destroy'
+    resources :user, only: %i[update destroy] do
+      post :sign_up
+    end
 
-    post 'send_email_confirmation', to: 'confirmations#create'
-    get 'confirm_email', to: 'confirmations#update', param: :confirmation_token
-  end
+    resources :email_confirmations, only: %i[create] do
+      get :verify, param: :confirmation_token, on: :collection
+    end
 
-  scope :oauth do
-    post 'sign_in', to: 'sessions#create'
-    delete 'sign_out', to: 'sessions#destroy'
-    put 'refresh_token', to: 'sessions#update'
+    resource :password_reset, only: %i[create] do
+      get :verify, param: :password_reset_token, on: :collection
+    end
+
+    resources :sessions, only: %i[] do
+      collection do
+        post :sign_in
+        delete :sign_out
+        put :refresh_token
+      end
+    end
   end
 end

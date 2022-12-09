@@ -30,9 +30,6 @@ class Authenticator
     rescue JWT::ExpiredSignature
       Rails.logger.warn("Expired token - access_token: #{access_token}")
       return false
-    rescue ActiveRecord::RecordNotFound
-      Rails.logger.warn("User not found - access_token: #{access_token}")
-      return false
     rescue => e
       Rails.logger.warn(
         "Sign out exception - access_token: #{access_token} exception: #{e}"
@@ -42,19 +39,21 @@ class Authenticator
   end
 
   def self.refresh_token(user)
-    oauthToken = user.oauth_access_token
+    oauth_token_attributes = {
+      token: TokenGenerator.access_token({ user_id: user.id }),
+      refresh_token: TokenGenerator.refresh_token,
+      expired_at: TOKEN_EXPIRED_DURATION
+    }
+    user.oauth_access_token.update!(oauth_token_attributes)
 
-    exp = Time.current + (oauthToken.expired_at - Time.current) - 1.second
-    access_token = TokenGenerator.access_token({ user_id: user.id }, exp)
-    refresh_token = TokenGenerator.refresh_token
-
-    oauthToken.update!(
-      token: access_token,
-      refresh_token: refresh_token,
-      expired_at: exp
+    return(
+      OpenStruct.new(
+        {
+          token: oauth_token_attributes['token'],
+          refresh_token: oauth_token_attributes['refresh_token']
+        }
+      )
     )
-
-    return OpenStruct.new({ token: access_token, refresh_token: refresh_token })
   end
 
   def self.authorize(access_token)
@@ -63,7 +62,7 @@ class Authenticator
       return false if body.nil?
 
       user = User.find(body['user_id'])
-      return user
+      user
     end
   end
 end

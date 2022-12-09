@@ -3,7 +3,7 @@ module Api
     skip_before_action :authenticatable_request, only: %i[create]
     before_action :authenticate_request!, except: %i[create]
 
-    def create
+    def sign_up
       @user = User.new(create_user_params)
       if @user.save
         @user.send_confirmation_email!
@@ -25,7 +25,7 @@ module Api
     def update
       @user = current_user
       @active_sessions = @user.active_sessions.order(created_at: :desc)
-      if @user.authenticate(params[:user][:current_password])
+      if @user.authenticate(update_user_params[:password])
         if @user.update(update_user_params)
           if params[:user][:unconfirmed_email].present?
             @user.send_confirmation_email!

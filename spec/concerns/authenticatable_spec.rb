@@ -17,7 +17,7 @@ RSpec.describe Authenticatable, type: :request do
       it 'do nothing' do
         delete sign_out_path, headers: { 'Authorization' => 'foo' }
 
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(400)
       end
     end
   end

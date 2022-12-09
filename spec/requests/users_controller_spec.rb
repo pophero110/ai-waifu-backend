@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::UsersController, type: :request do
-  describe 'sign_up' do
+  describe 'create' do
     context 'with correct params' do
       it 'creats user in database' do
         user = {
