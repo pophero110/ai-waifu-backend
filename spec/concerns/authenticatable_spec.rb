@@ -5,9 +5,9 @@ require 'rails_helper'
 RSpec.describe Authenticatable, type: :request do
   describe 'authenticatable_request' do
     context 'has no authorization header' do
-      it 'return 400' do
-        delete sign_out_path
-        expect(response).to have_http_status(400)
+      it 'return 422' do
+        delete sign_out_api_sessions_path
+        expect(response).to have_http_status(:unprocessable_entity)
         body = JSON.parse(response.body)
         expect(body['errors']).to eq('Missing Authorization Header')
       end
@@ -15,9 +15,9 @@ RSpec.describe Authenticatable, type: :request do
 
     context 'has authorization header' do
       it 'do nothing' do
-        delete sign_out_path, headers: { 'Authorization' => 'foo' }
+        delete sign_out_api_sessions_path, headers: { 'Authorization' => 'foo' }
 
-        expect(response).to have_http_status(400)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end

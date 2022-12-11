@@ -58,25 +58,27 @@ RSpec.describe Api::EmailConfirmationsController, type: :request do
     end
   end
 
-  describe 'post send_email_confirmation' do
-    let(:user) { create(:user) }
+  describe 'POST create' do
+    let(:user) { create(:user, confirmed_at: nil) }
     let(:action) { -> { post api_email_confirmations_path, params: params } }
-    let(:params) { { user: { email: user.email } } }
-    context 'email is found' do
-      it 'calls send_confirmation_email!' do
-        expect_any_instance_of(User).to receive(:send_confirmation_email!)
+    let(:params) { { email: user.email } }
+    context 'email is not confirmed' do
+      it 'calls EmailVerification.email_confirmation' do
+        expect(EmailVerification).to receive(:email_confirmation).with(
+          instance_of(User)
+        )
         action.call
       end
       it 'return 200' do
         action.call
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
       end
 
       context 'email is confirmed' do
         before(:each) { user.update(confirmed_at: Time.current) }
         it 'return error' do
           action.call
-          expect(response).to have_http_status(422)
+          expect(response).to have_http_status(:unprocessable_entity)
           expect(
             JSON.parse(response.body)['errors']
           ).to eq 'Something went wrong'
@@ -88,10 +90,10 @@ RSpec.describe Api::EmailConfirmationsController, type: :request do
       end
     end
     context 'email is not found' do
-      let(:params) { { user: { email: 'fake@email.co ' } } }
+      let(:params) { { email: 'fake@email.co ' } }
       it 'return error' do
         action.call
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['errors']).to eq 'Something went wrong'
       end
       it 'calls Rails.logger.warn' do

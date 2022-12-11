@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe UserMailer, type: :mailer do
   describe 'email_confirmation' do
     let(:user) { build(:user) }
-    let(:mail) { UserMailer.email_confirmation(user, confirmation_token) }
+    let(:mail) do
+      UserMailer.email_confirmation(user.confirmable_email, confirmation_token)
+    end
     let(:confirmation_token) { 'foo' }
     it 'renders the headers' do
       expect(mail.subject).to eq 'Email Confirmation Instructions'
@@ -33,7 +35,7 @@ RSpec.describe UserMailer, type: :mailer do
 
   describe 'password_reset' do
     let(:user) { build(:user) }
-    let(:mail) { UserMailer.password_reset(user, password_reset_token) }
+    let(:mail) { UserMailer.password_reset(user.email, password_reset_token) }
     let(:password_reset_token) { 'foo' }
     it 'renders the headers' do
       expect(mail.subject).to eq 'Password Reset Instructions'
