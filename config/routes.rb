@@ -21,15 +21,19 @@ Rails.application.routes.draw do
       post 'download', on: :member
     end
 
-    resources :user, only: %i[update destroy] do
-      post :sign_up
+    resources :users, only: %i[] do
+      collection do
+        post :sign_up
+        put :update_account
+      end
     end
 
+    # TODO: add a parent controller to refactor these two controllers
     resources :email_confirmations, only: %i[create] do
       get :verify, param: :confirmation_token, on: :collection
     end
 
-    resource :password_reset, only: %i[create] do
+    resource :password_resets, only: %i[create] do
       get :verify, param: :password_reset_token, on: :collection
     end
 
