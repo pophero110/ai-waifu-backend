@@ -1,6 +1,7 @@
 module Api
   class BaseController < ApplicationController
     include ExceptionHandler
+    include Authenticatable
     before_action :set_json_header
 
     def api_user_data
@@ -8,8 +9,8 @@ module Api
       return claims.user if claims
     end
 
-    def re_err(errors, hash)
-      render json: { errors: errors }, status: hash[:status]
+    def re_err(errors, status: :bad_request)
+      render json: { errors: errors }, status: status
     end
 
     def set_json_header
