@@ -7,17 +7,15 @@ class UserMailer < ApplicationMailer
   #
   # TODO: add mail preview to check view
 
-  def email_confirmation(user, confirmation_token)
-    @user = user
+  def email_confirmation(email, confirmation_token)
     @confirmation_token = confirmation_token
 
-    mail to: @user.confirmable_email, subject: 'Email Confirmation Instructions'
+    mail to: email, subject: 'Email Confirmation Instructions'
   end
 
-  def password_reset(user, password_reset_token)
-    @user = user
+  def password_reset(email, password_reset_token)
     @password_reset_token = password_reset_token
 
-    mail to: @user.email, subject: 'Password Reset Instructions'
+    mail to: email, subject: 'Password Reset Instructions'
   end
 end

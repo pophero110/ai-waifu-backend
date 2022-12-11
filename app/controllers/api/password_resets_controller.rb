@@ -1,25 +1,20 @@
 module Api
-  class PasswordResetsController < ApplicationController
+  class PasswordResetsController < BaseController
     before_action :authenticate_request!
 
     # TODO: password reset api refactor
     # TODO: add params require method
     def create
-      @user = User.find_by(email: params[:user][:email].downcase)
+      @user = User.find_by(email: create_params[:email])
       if @user.present?
         if @user.confirmed?
-          @user.send_password_reset_email!
-          redirect_to root_path,
-                      notice:
-                        "If that user exists we've sent instructions to their email."
+          EmailVerification.email_confirmation(@user)
+          head :ok
         else
-          redirect_to new_confirmation_path,
-                      alert: 'Please confirm your email first.'
+          re_err('Email is not confirmed', status: :unprocessable_entity)
         end
       else
-        redirect_to root_path,
-                    notice:
-                      "If that user exists we've sent instructions to their email."
+        EmailVerification.password_reset(@user)
       end
     end
 
@@ -62,8 +57,12 @@ module Api
 
     private
 
+    def create_params
+      params.permit(:email)
+    end
+
     def password_params
-      params.require(:user).permit(:password, :password_confirmation)
+      params.permit(:password, :password_confirmation)
     end
   end
 end

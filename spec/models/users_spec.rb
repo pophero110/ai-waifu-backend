@@ -71,22 +71,22 @@ RSpec.describe User, type: :model do
     context 'unconfirmed?' do
       let(:user) { build(:user) }
       it 'returns boolean' do
-        expect(user.unconfirmed?).to eq true
-
-        user.confirmed_at = Time.current
-
         expect(user.unconfirmed?).to eq false
+
+        user.confirmed_at = nil
+
+        expect(user.unconfirmed?).to eq true
       end
     end
 
     context 'confirmed?' do
       let(:user) { build(:user) }
       it 'returns boolean' do
-        expect(user.confirmed?).to eq false
-
-        user.confirmed_at = Time.current
-
         expect(user.confirmed?).to eq true
+
+        user.confirmed_at = nil
+
+        expect(user.confirmed?).to eq false
       end
     end
 
@@ -104,45 +104,6 @@ RSpec.describe User, type: :model do
         user.confirms_email?
         expect(user.email).to eq unconfirmed_email
         expect(user.unconfirmed_email).to eq nil
-      end
-    end
-
-    describe 'send_email' do
-      let(:user) { build(:user) }
-      let(:mailer) { double }
-      before(:each) { allow(mailer).to receive(:deliver_now) }
-      context 'send_confirmation_email!' do
-        before(:each) do
-          allow_any_instance_of(User).to receive(
-            :generate_confirmation_token
-          ).and_return('foo')
-        end
-        it 'call UserMailer.confirmation with correct arguments' do
-          expect(UserMailer).to receive(:email_confirmation).with(
-            user,
-            'foo'
-          ).and_return(mailer)
-          expect(mailer).to receive(:deliver_now)
-
-          user.send_confirmation_email!
-        end
-      end
-
-      context 'send_password_reset_email' do
-        before(:each) do
-          allow_any_instance_of(User).to receive(
-            :generate_password_reset_token
-          ).and_return('foo')
-        end
-        it 'call UserMailer.confirmation with correct arguments' do
-          expect(UserMailer).to receive(:password_reset).with(
-            user,
-            'foo'
-          ).and_return(mailer)
-          expect(mailer).to receive(:deliver_now)
-
-          user.send_password_reset_email!
-        end
       end
     end
 

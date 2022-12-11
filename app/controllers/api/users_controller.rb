@@ -1,12 +1,12 @@
 module Api
   class UsersController < BaseController
-    skip_before_action :authenticatable_request, only: %i[create]
-    before_action :authenticate_request!, except: %i[create]
+    skip_before_action :authenticatable_request, only: %i[sign_up]
+    before_action :authenticate_request!, except: %i[sign_up]
 
     def sign_up
       @user = User.new(create_user_params)
       if @user.save
-        @user.send_confirmation_email!
+        EmailVerification.email_confirmation(@user)
         head :created
       else
         render status: :unprocessable_entity,
@@ -16,13 +16,7 @@ module Api
       end
     end
 
-    def destroy
-      current_user.destroy
-      reset_session
-      redirect_to root_path, notice: 'Your account has been deleted.'
-    end
-
-    def update
+    def update_account
       @user = current_user
       @active_sessions = @user.active_sessions.order(created_at: :desc)
       if @user.authenticate(update_user_params[:password])
@@ -47,11 +41,11 @@ module Api
     private
 
     def create_user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
+      params.permit(:email, :password, :password_confirmation)
     end
 
     def update_user_params
-      params.require(:user).permit(
+      params.permit(
         :current_password,
         :password,
         :password_confirmation,

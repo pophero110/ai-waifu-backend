@@ -32,7 +32,7 @@ class Authenticator
       return false
     rescue => e
       Rails.logger.warn(
-        "Sign out exception - access_token: #{access_token} exception: #{e}"
+        "Sign out exception - access_token: #{access_token} Exception: #{e.message}"
       )
       return false
     end

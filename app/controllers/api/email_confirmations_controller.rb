@@ -4,19 +4,22 @@ module Api
 
     # TODO: implement Rack::Attack to protect Rails from bad clients
     def create
-      @user = User.find_by(email: send_params[:email].downcase)
-
+      @user = User.find_by(email: create_params[:email].downcase)
       if @user.present? && @user.unconfirmed?
-        @user.send_confirmation_email!
+        EmailVerification.email_confirmation(@user)
         head :ok
       else
-        Rails.logger.warn "user not found or user's email is not confirmed, user: #{@user.inspect}"
-        re_err('Something went wrong', status: 422)
+        Rails.logger.warn "user's email is not found or confirmed: #{create_params[:email]}"
+        re_err('Something went wrong', status: :unprocessable_entity)
       end
     end
 
     def verify
-      @user = User.find_signed(verify_params, purpose: :confirm_email)
+      @user =
+        User.find_signed(
+          verify_params[:confirmation_token],
+          purpose: :confirm_email
+        )
       if @user.present?
         if @user.confirms_email?
           redirect_to web_client_login_path(status: '200')
@@ -37,11 +40,11 @@ module Api
     private
 
     def verify_params
-      params.require(:confirmation_token)
+      params.permit(:confirmation_token)
     end
 
-    def send_params
-      params.require(:user).permit(:email)
+    def create_params
+      params.permit(:email)
     end
   end
 end
