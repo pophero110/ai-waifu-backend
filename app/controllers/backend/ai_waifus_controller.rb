@@ -1,6 +1,5 @@
 class AiWaifusController < ApplicationController
   USERS = { 'jeff' => 'jiajin' }
-  skip_before_action :verify_authenticity_token
   before_action :set_ai_waifu, only: %i[show edit destroy like download]
   before_action :authenticate, except: %i[show like download]
 

@@ -1,17 +1,17 @@
 test:
-    service: Disk
-    root: <%= Rails.root.join("tmp/storage") %>
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
 
 local:
-    service: Disk
-    root: <%= Rails.root.join("storage") %>
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
 
 amazon:
-    service: S3
-    access_key_id: <%= ENV["access_key_id"] %>
-    secret_access_key: <%= ENV["secret_access_key"] %>
-    region: us-east-2
-    bucket: ai-anime-waifu-picture
+  service: S3
+  access_key_id: <%= ENV["ACCESS_KEY_ID"] %>
+  secret_access_key: <%= ENV["SECRET_ACCESS_KEY"] %>
+  region: <%= ENV["AWS_REGION"] %>
+  bucket: ai-anime-waifu-picture
 # Remember not to checkin your GCS keyfile to a repository
 # google:
 #   service: GCS

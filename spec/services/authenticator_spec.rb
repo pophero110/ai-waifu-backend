@@ -25,14 +25,14 @@ RSpec.describe Authenticator do
       let(:access_token) { user.oauth_access_token.token }
       before(:each) { Authenticator.sign_in(user) }
       context 'successfully' do
-        it 'destroy token in database' do
+        it 'destroys token in database' do
           expect { Authenticator.sign_out(access_token) }.to change {
             OauthAccessToken.count
           }.from(1).to(0)
 
           expect(user.reload.oauth_access_token).to eq nil
         end
-        it 'return true' do
+        it 'returns true' do
           expect(Authenticator.sign_out(access_token)).to eq true
         end
       end
@@ -50,7 +50,8 @@ RSpec.describe Authenticator do
       let(:refresh_token) { user.oauth_access_token.refresh_token }
       before(:each) { Authenticator.sign_in(user) }
       it 'update tokens in database' do
-        newToken = Authenticator.refresh_token(user)
+        travel_to 1.hour.from_now
+        newToken = Authenticator.refresh_token(refresh_token)
 
         expect(access_token).to_not eq newToken.token
         expect(refresh_token).to_not eq newToken.refresh_token

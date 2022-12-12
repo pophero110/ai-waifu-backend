@@ -6,12 +6,12 @@ Rails.application.routes.draw do
   # redirect user to web client
   namespace :web_client do
     get '/login',
-        to: redirect { |params, request| 'http://localhost:4000/login' }
+        to: redirect { |params, request| "#{ENV['WEB_CLIENT_DOMAIN']}/login" }
     get '/email_confirmation',
         params: %i[status errors],
         to:
           redirect { |params, request|
-            "http://localhost:4000/email_confirmation?status=#{params[:status]}&errors=#{params[:errors]}"
+            "#{ENV['WEB_CLIENT_DOMAIN']}/email_confirmation?status=#{params[:status]}&errors=#{params[:errors]}"
           }
   end
 
