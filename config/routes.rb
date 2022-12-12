@@ -15,6 +15,13 @@ Rails.application.routes.draw do
           }
   end
 
+  namespace :backend do
+    resources :ai_waifus do
+      post 'like', on: :member
+      post 'download', on: :member
+    end
+  end
+
   namespace :api do
     resources :ai_waifus do
       post 'like', on: :member
