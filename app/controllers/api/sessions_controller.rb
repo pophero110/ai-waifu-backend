@@ -39,16 +39,19 @@ module Api
 
     def refresh_token
       oauthToken = Authenticator.refresh_token(params[:refresh_token])
-      if oauthToken.destroyed?
-        re_err('Expired Token', status: :unprocessable_entity)
+      if oauthToken.present?
+        if oauthToken.destroyed?
+          re_err('Expired Token', status: :unprocessable_entity)
+        else
+          render status: :ok,
+                 json: {
+                   access_token: oauthToken.token,
+                   refresh_token: oauthToken.refresh_token
+                 }
+        end
       else
-        render status: :ok,
-               json: {
-                 access_token: oauthToken.token,
-                 refresh_token: oauthToken.refresh_token
-               }
+        re_err('Invalid Token', status: :unprocessable_entity)
       end
-      re_err('Invalid Token', status: :unprocessable_entity)
     end
 
     private
