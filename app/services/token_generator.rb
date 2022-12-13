@@ -1,8 +1,7 @@
 class TokenGenerator
   def self.access_token(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
-    access_token =
-      JWT.encode(payload, Rails.application.secrets.secret_key_base)
+    access_token = JWT.encode(payload, ENV['RAILS_SECRECT_BASE'])
     access_token
   end
 
@@ -16,8 +15,7 @@ class TokenGenerator
   end
 
   def self.verify(access_token)
-    body =
-      JWT.decode(access_token, Rails.application.secrets.secret_key_base)[0]
+    body = JWT.decode(access_token, ENV['RAILS_SECRECT_BASE'])[0]
     HashWithIndifferentAccess.new body
   end
 end
