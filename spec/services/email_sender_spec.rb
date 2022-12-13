@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe EmailVerification do
+RSpec.describe EmailSender do
   describe 'send_email' do
     let(:user) { build(:user) }
     let(:mailer) { double }
@@ -12,7 +12,7 @@ RSpec.describe EmailVerification do
           :generate_confirmation_token
         ).and_return('foo')
       end
-      let(:reason) { EmailVerification::REASON[:email_confirmation] }
+      let(:reason) { EmailSender::REASON[:email_confirmation] }
       it 'call UserMailer.confirmation with correct arguments' do
         expect(UserMailer).to receive(:email_confirmation).with(
           user,
@@ -30,7 +30,7 @@ RSpec.describe EmailVerification do
           :generate_password_reset_token
         ).and_return('foo')
       end
-      let(:reason) { EmailVerification::REASON[:password_reset] }
+      let(:reason) { EmailSender::REASON[:password_reset] }
       it 'call UserMailer.confirmation with correct arguments' do
         expect(UserMailer).to receive(:password_reset).with(
           user,

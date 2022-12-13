@@ -63,8 +63,8 @@ RSpec.describe Api::EmailConfirmationsController, type: :request do
     let(:action) { -> { post api_email_confirmations_path, params: params } }
     let(:params) { { email: user.email } }
     context 'email is not confirmed' do
-      it 'calls EmailVerification.email_confirmation' do
-        expect(EmailVerification).to receive(:email_confirmation).with(
+      it 'calls EmailSender.email_confirmation' do
+        expect(EmailSender).to receive(:email_confirmation).with(
           instance_of(User)
         )
         action.call

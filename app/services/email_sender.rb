@@ -1,4 +1,4 @@
-class EmailVerification
+class EmailSender
   def self.email_confirmation(user)
     UserMailer.email_confirmation(
       user.confirmable_email,

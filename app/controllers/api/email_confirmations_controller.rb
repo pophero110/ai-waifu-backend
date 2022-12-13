@@ -6,7 +6,7 @@ module Api
     def create
       @user = User.find_by(email: create_params[:email].downcase)
       if @user.present? && @user.unconfirmed?
-        EmailVerification.email_confirmation(@user)
+        EmailSender.email_confirmation(@user)
         head :ok
       else
         Rails.logger.warn "user's email is not found or confirmed: #{create_params[:email]}"

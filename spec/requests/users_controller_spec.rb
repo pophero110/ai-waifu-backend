@@ -17,8 +17,8 @@ RSpec.describe Api::UsersController, type: :request do
       it 'creates user in database' do
         expect { action.call }.to change { User.count }.by(1)
       end
-      it 'calls EmailVerification.email_confirmation' do
-        expect(EmailVerification).to receive(:email_confirmation).with(
+      it 'calls EmailSender.email_confirmation' do
+        expect(EmailSender).to receive(:email_confirmation).with(
           instance_of(User)
         )
         action.call

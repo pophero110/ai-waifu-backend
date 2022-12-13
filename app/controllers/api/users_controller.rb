@@ -6,7 +6,7 @@ module Api
     def sign_up
       @user = User.new(create_user_params)
       if @user.save
-        EmailVerification.email_confirmation(@user)
+        EmailSender.email_confirmation(@user)
         head :created
       else
         render status: :unprocessable_entity,
