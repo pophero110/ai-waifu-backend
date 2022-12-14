@@ -83,3 +83,5 @@ gem "jwt"
 gem "jsbundling-rails", "~> 1.0"
 gem "rack-cors"
 gem "rspec-rails", group: [:development, :test]
+gem 'active_model_serializers', '~> 0.10.0'
+gem 'jsonapi-serializer'

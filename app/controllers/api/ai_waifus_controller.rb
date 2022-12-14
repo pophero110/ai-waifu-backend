@@ -3,8 +3,8 @@ module Api
     skip_before_action :authenticatable_request, only: [:index]
 
     def index
-      @ai_waifus = AiWaifu.includes(:likes, :downloads).order(created_at: :desc)
-      render json: @ai_waifus, methods: :image_url
+      ai_waifus = AiWaifu.order(created_at: :desc)
+      render json: AiWaifuSerializer.new(ai_waifus).serializable_hash.to_json
     end
   end
 end
