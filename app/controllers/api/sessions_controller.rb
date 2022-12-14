@@ -38,15 +38,15 @@ module Api
     end
 
     def refresh_token
-      oauthToken = Authenticator.refresh_token(params[:refresh_token])
-      if oauthToken.present?
-        if oauthToken.destroyed?
+      oauth_access_token = Authenticator.refresh_token(params[:refresh_token])
+      if oauth_access_token.present?
+        if oauth_access_token.destroyed?
           re_err('Expired Token', status: :unprocessable_entity)
         else
           render status: :ok,
                  json: {
-                   access_token: oauthToken.token,
-                   refresh_token: oauthToken.refresh_token
+                   access_token: oauth_access_token.token,
+                   refresh_token: oauth_access_token.refresh_token
                  }
         end
       else

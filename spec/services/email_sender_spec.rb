@@ -1,21 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe EmailSender do
-  describe 'send_email' do
+  describe 'class methods' do
     let(:user) { build(:user) }
     let(:mailer) { double }
-    let(:action) { -> { described_class.send_email(user, reason: reason) } }
     before(:each) { allow(mailer).to receive(:deliver_now) }
-    context 'send_confirmation_email!' do
+    context 'email_confirmation' do
       before(:each) do
         allow_any_instance_of(User).to receive(
           :generate_confirmation_token
         ).and_return('foo')
       end
-      let(:reason) { EmailSender::REASON[:email_confirmation] }
+      let(:action) { -> { described_class.email_confirmation(user) } }
       it 'call UserMailer.confirmation with correct arguments' do
         expect(UserMailer).to receive(:email_confirmation).with(
-          user,
+          user.confirmable_email,
           'foo'
         ).and_return(mailer)
         expect(mailer).to receive(:deliver_now)
@@ -24,16 +23,16 @@ RSpec.describe EmailSender do
       end
     end
 
-    context 'send_password_reset_email' do
+    context 'password_reset' do
       before(:each) do
         allow_any_instance_of(User).to receive(
           :generate_password_reset_token
         ).and_return('foo')
       end
-      let(:reason) { EmailSender::REASON[:password_reset] }
+      let(:action) { -> { described_class.password_reset(user) } }
       it 'call UserMailer.confirmation with correct arguments' do
         expect(UserMailer).to receive(:password_reset).with(
-          user,
+          user.email,
           'foo'
         ).and_return(mailer)
         expect(mailer).to receive(:deliver_now)

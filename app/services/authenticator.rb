@@ -34,7 +34,7 @@ class Authenticator
   def self.refresh_token(refresh_token)
     oauth_access_token = OauthAccessToken.find_by(refresh_token: refresh_token)
     if oauth_access_token.present?
-      return oauthToken.destroy if oauth_access_token.expired?
+      return oauth_access_token.destroy if oauth_access_token.expired?
       # Refresh Token Rotaion to avoid malicious users
       new_oauth_token_attributes = {
         token:
