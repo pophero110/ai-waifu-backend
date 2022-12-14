@@ -8,8 +8,7 @@ RSpec.describe Authenticatable, type: :request do
       it 'return 422' do
         delete sign_out_api_sessions_path
         expect(response).to have_http_status(:unprocessable_entity)
-        body = JSON.parse(response.body)
-        expect(body['errors']).to eq('Missing Authorization Header')
+        expect(json_response[:errors]).to eq('Missing Authorization Header')
       end
     end
 

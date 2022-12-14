@@ -19,6 +19,7 @@ RSpec.describe Api::PasswordResetsController, type: :request do
       it 'return 422 with errors' do
         action.call
 
+        expect(json_response[:errors]).to eq 'Something went wrong'
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end

@@ -26,8 +26,8 @@ class Authenticator
     else
       return false
     end
-  rescue JWT::ExpiredSignature => e
-    Rails.logger.warn("Expired token: #{access_token}")
+  rescue => e
+    Rails.logger.warn("JWT exception #{access_token}")
     return false
   end
 

@@ -13,9 +13,7 @@ RSpec.describe Api::SessionsController, type: :request do
       it 'return 422 with error message' do
         action.call
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)['errors']).to eq(
-          'Incorrect email or password'
-        )
+        expect(json_response[:errors]).to eq('Incorrect email or password')
       end
     end
     context 'wrong password' do
@@ -23,9 +21,7 @@ RSpec.describe Api::SessionsController, type: :request do
       it 'return 422 with error message' do
         action.call
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)['errors']).to eq(
-          'Incorrect email or password'
-        )
+        expect(json_response[:errors]).to eq('Incorrect email or password')
       end
     end
 
@@ -36,8 +32,7 @@ RSpec.describe Api::SessionsController, type: :request do
           action.call
 
           expect(response).to have_http_status(:unprocessable_entity)
-          body = JSON.parse(response.body)
-          expect(body['errors']).to eq('Email is not confirmed')
+          expect(json_response[:errors]).to eq('Email is not confirmed')
         end
       end
       context 'email is confirmed' do
@@ -108,7 +103,7 @@ RSpec.describe Api::SessionsController, type: :request do
         action.call
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)['errors']).to eq 'Invalid Token'
+        expect(json_response[:errors]).to eq 'Invalid Token'
       end
     end
 
@@ -118,7 +113,7 @@ RSpec.describe Api::SessionsController, type: :request do
         action.call
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)['errors']).to eq 'Invalid Token'
+        expect(json_response[:errors]).to eq 'Invalid Token'
       end
     end
   end
@@ -144,16 +139,15 @@ RSpec.describe Api::SessionsController, type: :request do
            }
     end
     context 'with correct refresh_token' do
-      it 'returns 200' do
-        action.call
-
-        expect(response).to have_http_status(:ok)
-      end
-
+      let!(:oauth_token) { user.oauth_access_token }
       it 'returns new token' do
+        # to make sure exp is different every time, so jwt will generate different token with same user_id
+        # TODO: look for a better way to do it
+        travel_to 1.hours.from_now
         action.call
 
         body = JSON.parse(response.body)
+        expect(response).to have_http_status(:ok)
         expect(body['access_token']).to_not eq oauth_token.token
         expect(body['refresh_token']).to_not eq oauth_token.refresh_token
       end
@@ -165,7 +159,7 @@ RSpec.describe Api::SessionsController, type: :request do
         action.call
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)['errors']).to eq 'Invalid Token'
+        expect(json_response[:errors]).to eq 'Invalid Token'
       end
     end
 
@@ -176,7 +170,7 @@ RSpec.describe Api::SessionsController, type: :request do
         action.call
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)['errors']).to eq 'Expired Token'
+        expect(json_response[:errors]).to eq 'Expired Token'
       end
       it 'deletes expired token in database' do
         travel_to 25.hours.from_now

@@ -46,12 +46,12 @@ RSpec.describe UserMailer, type: :mailer do
     it 'renders the body' do
       expect(
         mail.html_part.body.decoded[/http(.*?)foo/]
-      ).to eq verify_api_password_reset_url(
+      ).to eq verify_api_password_resets_url(
            password_reset_token: password_reset_token
          )
       expect(
         mail.text_part.body.decoded[/http(.*?)foo/]
-      ).to eq verify_api_password_reset_url(
+      ).to eq verify_api_password_resets_url(
            password_reset_token: password_reset_token
          )
     end

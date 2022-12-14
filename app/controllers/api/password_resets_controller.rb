@@ -8,13 +8,13 @@ module Api
       @user = User.find_by(email: create_params[:email])
       if @user.present?
         if @user.confirmed?
-          EmailSender.email_confirmation(@user)
+          EmailSender.password_reset(@user)
           head :ok
         else
           re_err('Email is not confirmed', status: :unprocessable_entity)
         end
       else
-        EmailSender.password_reset(@user)
+        re_err('Something went wrong', status: :unprocessable_entity)
       end
     end
 

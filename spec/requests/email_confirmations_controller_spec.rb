@@ -79,9 +79,7 @@ RSpec.describe Api::EmailConfirmationsController, type: :request do
         it 'return error' do
           action.call
           expect(response).to have_http_status(:unprocessable_entity)
-          expect(
-            JSON.parse(response.body)['errors']
-          ).to eq 'Something went wrong'
+          expect(json_response[:errors]).to eq 'Something went wrong'
         end
         it 'calls Rails.logger.warn' do
           expect(Rails.logger).to receive(:warn)
@@ -94,7 +92,7 @@ RSpec.describe Api::EmailConfirmationsController, type: :request do
       it 'return error' do
         action.call
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)['errors']).to eq 'Something went wrong'
+        expect(json_response[:errors]).to eq 'Something went wrong'
       end
       it 'calls Rails.logger.warn' do
         expect(Rails.logger).to receive(:warn)
