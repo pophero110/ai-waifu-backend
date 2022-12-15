@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Api::UsersController, type: :request do
   describe 'create' do
     let(:email) { 'test@gmail.com' }
-    let(:password) { 'test' }
-    let(:password_confirmation) { 'test' }
+    let(:password) { 'Test123456~' }
+    let(:password_confirmation) { 'Test123456~' }
     let(:action) { -> { post sign_up_api_users_path, params: params } }
     let(:params) do
       {
@@ -28,7 +28,7 @@ RSpec.describe Api::UsersController, type: :request do
     end
     context 'with invalid params' do
       context 'password does not match' do
-        let(:password) { 'test123' }
+        let(:password) { 'Test12345~' }
         it 'return 422 with errors' do
           action.call
 

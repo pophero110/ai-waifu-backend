@@ -4,7 +4,7 @@ RSpec.describe Api::SessionsController, type: :request do
   include_context 'authenticated request'
   describe 'POST sign_in' do
     let(:action) { -> { post sign_in_api_sessions_path, params: params } }
-    let(:password) { 'test' }
+    let(:password) { 'Test123456~' }
     let(:email) { 'test@gmail.com' }
     let(:user) { create(:user, email: email, password: password) }
     let(:params) { { email: email, password: password } }
@@ -67,7 +67,7 @@ RSpec.describe Api::SessionsController, type: :request do
   end
 
   describe 'DELETE sign_out' do
-    let(:password) { 'test' }
+    let(:password) { 'Test123456~' }
     let(:user) { create(:user, password: password) }
     let(:token) { user.oauth_access_token }
     let(:action) do
@@ -119,7 +119,7 @@ RSpec.describe Api::SessionsController, type: :request do
   end
 
   describe 'put refresh_token' do
-    let(:password) { 'test' }
+    let(:password) { 'Test123456~' }
     let(:user) { create(:user, password: password) }
     let(:oauth_token) { user.oauth_access_token }
     let(:refresh_token) { oauth_token.refresh_token }

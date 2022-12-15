@@ -7,7 +7,9 @@ RSpec.describe OauthAccessToken, type: :model do
       it 'is not valid' do
         oauth_access_token.user = nil
         expect(oauth_access_token.valid?).to eq false
-        expect(oauth_access_token.errors.messages[:user][0]).to eq 'must exist'
+        expect(oauth_access_token.errors.full_messages).to eq [
+             'User must exist'
+           ]
       end
     end
   end

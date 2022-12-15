@@ -16,6 +16,7 @@ class User < ApplicationRecord
   PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes
   MAILER_FROM_EMAIL = 'no-reply@example.com'
 
+  include UserValidation
   has_one :oauth_access_token, dependent: :destroy
 
   attr_accessor :current_password
@@ -24,13 +25,6 @@ class User < ApplicationRecord
 
   before_save :downcase_email
   before_save :downcase_unconfirmed_email
-
-  validates :email,
-            format: {
-              with: URI::MailTo::EMAIL_REGEXP
-            },
-            presence: true,
-            uniqueness: true
 
   def self.authenticate_by(attributes)
     passwords, identifiers =
@@ -66,7 +60,7 @@ class User < ApplicationRecord
     if email_unconfirmed_or_reconfirming?
       if unconfirmed_email.present?
         return(
-          update(
+          update_columns(
             confirmed_at: Time.current,
             email: unconfirmed_email,
             unconfirmed_email: nil
@@ -74,7 +68,7 @@ class User < ApplicationRecord
         )
       end
 
-      return update(confirmed_at: Time.current)
+      return update_columns(confirmed_at: Time.current)
     end
   end
 

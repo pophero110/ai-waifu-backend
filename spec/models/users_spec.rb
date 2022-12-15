@@ -6,15 +6,15 @@ RSpec.describe User, type: :model do
     context 'email' do
       it 'checks email format' do
         expect(user.valid?).to eq false
-        expect(user.errors.messages[:email][0]).to eq 'is invalid'
+        expect(user.errors.full_messages).to eq ['Email is invalid']
       end
 
       it 'checks email presence' do
         user.email = nil
         expect(user.valid?).to eq false
-        expect(user.errors.messages[:email]).to eq [
-             'is invalid',
-             "can't be blank"
+        expect(user.errors.full_messages).to eq [
+             'Email is invalid',
+             "Email can't be blank"
            ]
       end
     end
@@ -34,7 +34,7 @@ RSpec.describe User, type: :model do
     end
   end
   describe 'class method' do
-    let(:password) { 'test' }
+    let(:password) { 'Test123456~' }
     let!(:user) { create(:user, password: password) }
     context 'authenticate_by' do
       it 'returns user with corrent attributes' do

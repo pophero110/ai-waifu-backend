@@ -16,6 +16,7 @@ RSpec.describe Api::EmailConfirmationsController, type: :request do
       context 'Email is unconfirmed' do
         it 'calls confirmes_email?' do
           expect_any_instance_of(User).to receive(:confirms_email?)
+
           action.call
         end
         it 'redirects user to web client login page' do
